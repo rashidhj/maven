@@ -112,6 +112,7 @@ for (String os in runITsOses) {
                                 bat "${cmd}"
                             }
                         }
+                        archiveDirs(taskContext.archives, "${WORK_DIR}/core-it-suite/target/test-classes/mng-4747")
                         deleteDir() // clean up after ourselves to reduce disk space
                     }
                 }
@@ -155,4 +156,14 @@ parallel(runITsTasks)
     stage("Notifications") {
         jenkinsNotify()      
     }    
+}
+
+def archiveDirs(archives, stageDir) {
+  if (archives != null) {
+    dir(stageDir) {
+      archives.each { archivePrefix, pathToContent ->
+	    zip(zipFile: "${archivePrefix}-${stageDir}.zip", dir: pathToContent, archive: true)
+      }
+	}
+  }
 }

@@ -84,6 +84,10 @@ for (String os in runITsOses) {
             node(jenkinsEnv.nodeSelection(osLabel)) {
                 stage("${stageLabel}") {
                     echo "NODE_NAME = ${env.NODE_NAME}"
+                    if ( fileExists("${user.home}/.mavenrc") ) {
+                        echo "${user.home}/.mavenrc"
+                        readFile encoding: 'UTF-8', file: '${user.home}/.mavenrc'
+                    }
                     // on Windows, need a short path or we hit 256 character limit for paths
                     // using EXECUTOR_NUMBER guarantees that concurrent builds on same agent
                     // will not trample each other plus workaround for JENKINS-52657

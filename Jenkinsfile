@@ -85,8 +85,9 @@ for (String os in runITsOses) {
                 stage("${stageLabel}") {
                     echo "NODE_NAME = ${env.NODE_NAME}"
                     if ( fileExists("/home/jenkins/.mavenrc") ) {
-                        echo "/home/jenkins/.mavenrc"
-                        readFile encoding: 'UTF-8', file: '/home/jenkins/.mavenrc'
+                        echo "${env.NODE_NAME}:/home/jenkins/.mavenrc exists"
+                        def mavenrc = readFile encoding: 'UTF-8', file: '/home/jenkins/.mavenrc'
+                        echo "${mavenrc}"
                     }
                     // on Windows, need a short path or we hit 256 character limit for paths
                     // using EXECUTOR_NUMBER guarantees that concurrent builds on same agent
